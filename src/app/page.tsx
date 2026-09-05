@@ -1,16 +1,25 @@
-import { Gravador } from "@/components/gravador";
+import { supabaseServidor } from "@/lib/supabase/servidor";
+import { COLUNAS, type Nota } from "@/lib/notas/tipos";
+import { TelaLista } from "@/components/tela-lista";
 
-export default function Pagina() {
-  return (
-    <main className="mx-auto flex w-full max-w-2xl flex-col gap-8 px-5 py-10">
-      <header className="flex flex-col gap-2">
-        <h1 className="text-3xl font-semibold tracking-tight">Voice Notes</h1>
-        <p className="text-sm text-fumaca">
-          Toca para gravar, fala, toca para parar. O texto aparece aqui embaixo.
-        </p>
-      </header>
+/**
+ * A lista. Lê do banco a cada requisição — na Entrega 3 ela passa a ler do
+ * Dexie e nenhuma tela mais espera a rede para desenhar.
+ */
+export default async function Pagina({
+  searchParams,
+}: {
+  searchParams: Promise<{ excluida?: string }>;
+}) {
+  const { excluida } = await searchParams;
+  const supabase = await supabaseServidor();
 
-      <Gravador />
-    </main>
-  );
+  const { data } = await supabase
+    .from("notas")
+    .select(COLUNAS)
+    .is("excluido_em", null)
+    .order("atualizado_em", { ascending: false })
+    .limit(200);
+
+  return <TelaLista notas={(data ?? []) as Nota[]} excluida={excluida ?? null} />;
 }
