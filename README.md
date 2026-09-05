@@ -51,16 +51,29 @@ dado e progresso; Archivo fala, IBM Plex Mono mede.
 
 ## Estado
 
-**Só o PRD.** Ainda não há uma linha de código.
+**Entrega 0 no ar**, em <https://voice-notes-tau.vercel.app>. Uma página, sem
+banco, sem login e sem PWA: grava, manda para a rota de servidor, mostra o
+texto. Nada além disso existe ainda — a cópia automática é da Entrega 1, o corte
+de 3 minutos é da Entrega 2, o polimento e o vocabulário são da Entrega 4.
 
-O próximo passo é a Entrega 0, que existe para o projeto poder ser abandonado
-barato: uma página sem banco, sem login e sem PWA, que grava, transcreve e mostra
-o texto. O aceite é ditar dez notas de verdade e contar quantas você mandaria sem
-corrigir nada. Menos de sete, o projeto para para ser reavaliado — nenhuma tela
-bonita conserta transcrição ruim.
+A Entrega 0 existe para o projeto poder ser abandonado barato. O aceite é ditar
+dez notas de verdade, do seu jeito de falar, e medir duas coisas: o tempo entre
+soltar o botão e ver o texto (a tela mostra, nota a nota) e quantas das dez você
+mandaria sem corrigir nada. **Menos de sete, o projeto para para ser reavaliado
+antes da Entrega 1** — nenhuma tela bonita conserta transcrição ruim.
 
 Leia [`PRD.md`](PRD.md) inteiro antes de escrever qualquer coisa. É o único
 documento válido do projeto.
+
+### Rodando local
+
+```bash
+npm install && cp .env.local.example .env.local && npm run dev
+```
+
+A `GROQ_API_KEY` vai no `.env.local` e **só** lá: ela é lida pela rota de
+servidor e nunca chega ao navegador. Antes de todo deploy, `npx tsc --noEmit`,
+`npm run build`, e uma busca por `GROQ_API_KEY` no bundle do cliente.
 
 ## Stack pretendida
 
